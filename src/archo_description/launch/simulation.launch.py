@@ -27,6 +27,11 @@ def generate_launch_description():
         'obstacles.sdf'
     )
 
+    bridge_config = os.path.join(
+            package_share,
+            'config',
+            'bridge.yaml'
+        )
 
     robot_description = Command([
         'xacro',
@@ -82,7 +87,13 @@ def generate_launch_description():
         output='screen'
     )
 
-
+    ros_gazebo_bridge = Node(
+            package='ros_gz_bridge',
+            executable='parameter_bridge',
+            parameters=[{'config_file': bridge_config}]
+            )
+            
+            
     joint_state_broadcaster = Node(
         package='controller_manager',
         executable='spawner',
@@ -125,6 +136,7 @@ def generate_launch_description():
     return LaunchDescription([
         robot_state_publisher,
         gazebo,
+        ros_gazebo_bridge,
         delayed_spawn,
         delayed_controllers
     ])
