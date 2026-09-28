@@ -15,14 +15,14 @@ def generate_launch_description():
     robot_description = Command(['xacro', ' ', xacro_model])
     rviz_config = os.path.join(package_share, 'rviz', 'archo_robot.rviz')
 
-    robot_state_publisher = Node(package='robot_state_publisher', executable='robot_state_publisher', output='screen', parameters=[{'robot_description': robot_description}])
+    robot_state_publisher = Node(package='robot_state_publisher', executable='robot_state_publisher', output='screen', parameters=[{'robot_description': robot_description, 'use_sim_time': True}])
    
-    joint_state_publisher_gui = Node(package='joint_state_publisher_gui', executable='joint_state_publisher_gui', output='screen')
+#    joint_state_publisher_gui = Node(package='joint_state_publisher_gui', executable='joint_state_publisher_gui', output='screen')
     
-    rviz_viewer = Node(package='rviz2', executable='rviz2', output='screen', arguments=['-d', rviz_config])
+    rviz_viewer = Node(package='rviz2', executable='rviz2', output='screen', arguments=['-d', rviz_config], parameters=[{'use_sim_time': True}])
 
     return LaunchDescription([
         robot_state_publisher,
-        joint_state_publisher_gui,
+ #       joint_state_publisher_gui,
         rviz_viewer
     ])
